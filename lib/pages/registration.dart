@@ -244,23 +244,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        // SizedBox(height: 20.0),
-                        // Container(
-                        //   child: TextFormField(
-                        //     decoration: ThemeHelper().textInputDecoration(
-                        //         "Mobile Number",
-                        //         "Enter your mobile number"),
-                        //     keyboardType: TextInputType.phone,
-                        //     validator: (val) {
-                        //       if(!(val!.isEmpty) && !RegExp(r"^(\d+)*$").hasMatch(val)){
-                        //         return "Enter a valid phone number";
-                        //       }
-                        //       return null;
-                        //     },
-                        //   ),
-                        //   decoration: ThemeHelper().inputBoxDecorationShaddow(),
-                        // ),
-                        SizedBox(height: 20.0),
+                       const SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
                             controller: _passwordController,
@@ -276,7 +260,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 15.0),
+                      const  SizedBox(height: 15.0),
                         FormField<bool>(
                           builder: (state) {
                             return Column(
@@ -291,7 +275,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                             state.didChange(value);
                                           });
                                         }),
-                                    Text(
+                                   const Text(
                                       "I accept all terms and conditions.",
                                       style: TextStyle(color: Colors.grey),
                                     ),
@@ -331,7 +315,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   const EdgeInsets.fromLTRB(40, 10, 40, 10),
                               child: Text(
                                 "Register".toUpperCase(),
-                                style: TextStyle(
+                                style:const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -346,98 +330,98 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   MaterialPageRoute(
                                     builder: (context) => LoginPage(),
                                   ),
-                                  // (Route<dynamic> route) => false
+                                 
                                 );
                               }
                             },
                           ),
                         ),
-                        SizedBox(height: 30.0),
-                        Text(
-                          "Or create account using social media",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        SizedBox(height: 25.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              child: FaIcon(
-                                FontAwesomeIcons.googlePlus,
-                                size: 35,
-                                color: HexColor("#EC2D2F"),
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog(
-                                          "Google Plus",
-                                          "You tap on GooglePlus social icon.",
-                                          context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                            SizedBox(
-                              width: 30.0,
-                            ),
-                            GestureDetector(
-                              child: Container(
-                                padding: EdgeInsets.all(0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                      width: 5, color: HexColor("#40ABF0")),
-                                  color: HexColor("#40ABF0"),
-                                ),
-                                child: FaIcon(
-                                  FontAwesomeIcons.twitter,
-                                  size: 23,
-                                  color: HexColor("#FFFFFF"),
-                                ),
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog(
-                                          "Twitter",
-                                          "You tap on Twitter social icon.",
-                                          context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                            SizedBox(
-                              width: 30.0,
-                            ),
-                            GestureDetector(
-                              child: FaIcon(
-                                FontAwesomeIcons.facebook,
-                                size: 35,
-                                color: HexColor("#3E529C"),
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog(
-                                          "Facebook",
-                                          "You tap on Facebook social icon.",
-                                          context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                          ],
-                        ),
+                        // // SizedBox(height: 30.0),
+                        // // Text(
+                        // //   "Or create account using social media",
+                        // //   style: TextStyle(color: Colors.grey),
+                        // // ),
+                        // // SizedBox(height: 25.0),
+                        // // Row(
+                        // //   mainAxisAlignment: MainAxisAlignment.center,
+                        // //   children: [
+                        // //     GestureDetector(
+                        // //       child: FaIcon(
+                        // //         FontAwesomeIcons.googlePlus,
+                        // //         size: 35,
+                        // //         color: HexColor("#EC2D2F"),
+                        // //       ),
+                        // //       onTap: () {
+                        // //         setState(() {
+                        // //           showDialog(
+                        // //             context: context,
+                        // //             builder: (BuildContext context) {
+                        // //               return ThemeHelper().alartDialog(
+                        // //                   "Google Plus",
+                        // //                   "You tap on GooglePlus social icon.",
+                        // //                   context);
+                        // //             },
+                        // //           );
+                        // //         });
+                        // //       },
+                        // //     ),
+                        // //     SizedBox(
+                        // //       width: 30.0,
+                        // //     ),
+                        // //     GestureDetector(
+                        // //       child: Container(
+                        // //         padding: EdgeInsets.all(0),
+                        // //         decoration: BoxDecoration(
+                        // //           borderRadius: BorderRadius.circular(100),
+                        // //           border: Border.all(
+                        // //               width: 5, color: HexColor("#40ABF0")),
+                        // //           color: HexColor("#40ABF0"),
+                        // //         ),
+                        // //         child: FaIcon(
+                        // //           FontAwesomeIcons.twitter,
+                        // //           size: 23,
+                        // //           color: HexColor("#FFFFFF"),
+                        // //         ),
+                        // //       ),
+                        // //       onTap: () {
+                        // //         setState(() {
+                        // //           showDialog(
+                        // //             context: context,
+                        // //             builder: (BuildContext context) {
+                        // //               return ThemeHelper().alartDialog(
+                        // //                   "Twitter",
+                        // //                   "You tap on Twitter social icon.",
+                        // //                   context);
+                        // //             },
+                        // //           );
+                        // //         });
+                        // //       },
+                        // //     ),
+                        // //     SizedBox(
+                        // //       width: 30.0,
+                        // //     ),
+                        // //     GestureDetector(
+                        // //       child: FaIcon(
+                        // //         FontAwesomeIcons.facebook,
+                        // //         size: 35,
+                        // //         color: HexColor("#3E529C"),
+                        // //       ),
+                        // //       onTap: () {
+                        // //         setState(() {
+                        // //           showDialog(
+                        // //             context: context,
+                        // //             builder: (BuildContext context) {
+                        // //               return ThemeHelper().alartDialog(
+                        // //                   "Facebook",
+                        // //                   "You tap on Facebook social icon.",
+                        // //                   context);
+                        // //             },
+                        // //           );
+                        // //         });
+                        // //       },
+                        // //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),

@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/pages/create_task.dart';
-
-// import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task_app/pages/login.dart';
-// import 'package:task_app/pages/profile_page.dart';
-import 'pages/splash_screen.dart';
 import 'package:flutter/services.dart';
 // import 'package:hexcolor/hexcolor.dart';
 import 'package:task_app/pages/widget/constant.dart';
@@ -15,12 +10,7 @@ import 'package:task_app/pages/widget/constant.dart';
  
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-    // Get the application documents directory
-
-
   runApp(LoginUiApp());
-
-  // Close Hive when the app is disposed
   
 }
 
@@ -120,22 +110,14 @@ class LoginUiApp extends StatelessWidget {
         title: 'Flutter Login UI',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          // primaryColor: _primaryColor,
           primaryColor: _accentColor,
           scaffoldBackgroundColor: kwhite,
-          // colorScheme: Color.fromARGB(131, 255, 200, 3),
-          // scaffoldBackgroundColor: Colors.grey.shade100,
           primarySwatch: customSwatch,
         ),
-        // home: SplashScreen(title: 'Flutter Login UI'),
+        
          home: LoginPage(), //showReminderNotification: _showReminderNotification
         routes: {
           '/login': (context) => LoginPage(),
-          // '/profile': (context) => ProfilePage(),
-    //       '/home': (context){
-    //           // final logged_in_user_email = getLoggedInUserEmail(); // Call the method to retrieve the logged-in user's email
-    // return TasksPage(authenticatedUser:aut); //logged_in_user_email: logged_in_user_email
-    //       },
         });
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:task_app/data/database.dart';
 import 'package:task_app/pages/login.dart';
-import 'package:task_app/pages/registration.dart';
+
 import 'package:task_app/pages/view_tasks.dart';
 import 'package:intl/intl.dart';
 import 'package:task_app/pages/widget/constant.dart';
@@ -214,20 +214,21 @@ class _TasksPageState extends State<TasksPage> {
       // Perform the sorting logic here based on the sortByPriority value
     });
   }
-
-  List<Task> tasks = [
-    Task(
-      title: 'title',
-      description: 'description',
-      dueDate: DateTime(2023, 5, 6),
-      reminderTime: TimeOfDay(hour: 5, minute: 45),
-      isComplete: false,
-      priority: TaskPriority.Low,
-      category: Categories.personal,
-      // userId: userEmail;
-    )
-    //  list of tasks will store here
-  ];
+/* below code is just for passing default task. */
+List<Task>tasks=[];
+  // List<Task> tasks = [
+  //   Task(
+  //     title: 'title',
+  //     description: 'description',
+  //     dueDate: DateTime(2023, 5, 6),
+  //     reminderTime: TimeOfDay(hour: 5, minute: 45),
+  //     isComplete: false,
+  //     priority: TaskPriority.Low,
+  //     category: Categories.personal,
+  //     // userId: userEmail;
+  //   )
+  //   //  list of tasks will store here
+  // ];
 
   String selectedCategoryValue = '';
   List<Task> get filteredTasks {
@@ -827,7 +828,6 @@ class _TaskDialogState extends State<TaskDialog> {
 }
 
 String trimDescription(String description, int maxLength) {
-  // final List<String> words = description.split(' ');
 
   if (description.length <= maxLength) {
     // If the number of words is already 10 or less, return the original description
