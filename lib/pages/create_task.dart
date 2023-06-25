@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:task_app/pages/widget/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-
+import 'package:task_app/common/Notification_service.dart';
 import 'package:task_app/pages/widget/saveTasks.dart';
 
 enum TaskPriority {
@@ -297,26 +297,7 @@ List<Task>tasks=[];
               _openSearchDialog(); // Open search functionality
             },
           ),
-          //  IconButton(
-          //     icon: Icon(sortByDueDate ? Icons.arrow_upward : Icons.arrow_downward),
-          //     onPressed: _toggleSortByDueDate,
-          //   ),
-          //   IconButton(
-          //     icon: Icon(sortByPriority ? Icons.arrow_upward : Icons.arrow_downward),
-          //     onPressed: _toggleSortByPriority,
-          //   ),
 
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.more_vert,
-          //     // color: Colors.grey.shade600,
-          //     // size: 35,
-          //   ),
-          //   onPressed: () {
-          //     Navigator.push(context as BuildContext,
-          //         MaterialPageRoute(builder: (context) => menuPage()));
-          //   },
-          // ),
         ],
       ),
       body: ListView.builder(
@@ -327,24 +308,24 @@ List<Task>tasks=[];
           return Container(
             margin: const EdgeInsets.only(
               bottom: 0,
-              left: 5,
-              right: 5,
+              left: 10,
+              right: 10,
               top: 10,
             ),
             decoration: BoxDecoration(
               color: task.isComplete
                   ? Color.fromARGB(255, 151, 255, 153).withOpacity(0.3)
-                  : Color.fromARGB(181, 241, 164, 255).withOpacity(1),
+                  : Color.fromARGB(181, 164, 193, 255).withOpacity(1),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(186, 137, 136, 136).withOpacity(0.3),
+                  color: Color.fromARGB(186, 137, 136, 136).withOpacity(0.4),
 
                   blurRadius: 15.0, // soften the shadow
                   spreadRadius: 5, //extend the shadow
                   offset: Offset(
-                    0, // Move to right 5  horizontally
-                    0, // Move to bottom -5 Vertically
+                    5, // Move to right 5  horizontally
+                    5, // Move to bottom -5 Vertically
                   ),
                 )
               ],
@@ -387,15 +368,16 @@ List<Task>tasks=[];
                 // _editTask(task);
                 viewTask(context, task);
               },
-              onLongPress: () {
-                setState(() {
-                  task.toggleCompleted();
-                  saveTasks(tasks);
-                });
-              },
-              tileColor: task.isComplete
-                  ? Color.fromARGB(255, 151, 255, 153).withOpacity(0.3)
-                  : Color.fromARGB(181, 245, 189, 255).withOpacity(1),
+              // onLongPress: () {
+              //   setState(() {
+              //     task.toggleCompleted();
+              //     saveTasks(tasks);
+              //   });
+              // },
+              
+              // tileColor: task.isComplete
+              //     ? Color.fromARGB(255, 151, 255, 153).withOpacity(0.3)
+              //     : Color.fromARGB(181, 164, 193, 255).withOpacity(1),
             ),
           );
         },
@@ -553,18 +535,18 @@ List<Task>tasks=[];
                   selectedCategoryValue = value;
                 });
               },
-              decoration: InputDecoration(
+              decoration:const InputDecoration(
                 hintText: 'Enter title, description, category',
                 border: InputBorder.none,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.purple,
+                    color: Colors.blue,
                     width: 1, // Adjust the width as desired
                   ),
                 ),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.purple,
+                    color: Colors.blue,
                     width: 1.0, // Adjust the width as desired
                   ),
                 ),
@@ -640,11 +622,11 @@ class _TaskDialogState extends State<TaskDialog> {
   late TimeOfDay _selectedReminderTime;
   TaskPriority _selectedPriority = TaskPriority.Low;
   Categories _selectedCategory = Categories.personal;
-
+ NotificationServices notificationServices = NotificationServices();
   @override
   void initState() {
     super.initState();
-
+    notificationServices.initialiseNotifications();
     if (widget.task != null) {
       final task = widget.task!;
       _titleController = TextEditingController(text: task.title);
@@ -755,6 +737,8 @@ class _TaskDialogState extends State<TaskDialog> {
             ElevatedButton(
               onPressed: () {
                 _saveTask();
+                 notificationServices.sendNotification(
+                    'Task has been created', 'Task created');
               },
               child: Text('Save'),
             ),
