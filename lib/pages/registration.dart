@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:task_app/common/theme_helper.dart';
 import 'package:task_app/pages/login.dart';
 import 'package:task_app/pages/widget/header_widget.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 

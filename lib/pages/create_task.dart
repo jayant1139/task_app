@@ -1,16 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:task_app/data/database.dart';
-import 'package:task_app/pages/login.dart';
-
 import 'package:task_app/pages/view_tasks.dart';
-import 'package:intl/intl.dart';
 import 'package:task_app/pages/widget/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:task_app/common/Notification_service.dart';
 import 'package:task_app/pages/widget/saveTasks.dart';
+import 'package:intl/intl.dart';
 
 enum TaskPriority {
   Low,
@@ -88,8 +84,17 @@ class Task {
     return priorityValues[a]!.compareTo(priorityValues[b]!);
   }
 
+  NotificationServices notificationServices = NotificationServices();
   void toggleCompleted() {
     isComplete = !isComplete;
+    if (isComplete == false) {
+      notificationServices.sendNotification('Incomplete Task',
+          'Task assigned as Incomplete on ${DateFormat('hh:mm a').format(DateTime.now())}');
+    }
+    else{
+       notificationServices.sendNotification('Task Completed',
+          'Task assigned as completed on ${DateFormat('hh:mm a').format(DateTime.now())}');
+    }
   }
 }
 
@@ -214,8 +219,9 @@ class _TasksPageState extends State<TasksPage> {
       // Perform the sorting logic here based on the sortByPriority value
     });
   }
+
 /* below code is just for passing default task. */
-List<Task>tasks=[];
+  List<Task> tasks = [];
   // List<Task> tasks = [
   //   Task(
   //     title: 'title',
@@ -297,7 +303,6 @@ List<Task>tasks=[];
               _openSearchDialog(); // Open search functionality
             },
           ),
-
         ],
       ),
       body: ListView.builder(
@@ -319,19 +324,21 @@ List<Task>tasks=[];
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(186, 137, 136, 136).withOpacity(0.4),
+                  color: Color.fromARGB(173, 202, 202, 202).withOpacity(0.4),
 
-                  blurRadius: 15.0, // soften the shadow
-                  spreadRadius: 5, //extend the shadow
+                  blurRadius: 10.0, // soften the shadow
+                  spreadRadius: 2, //extend the shadow
                   offset: Offset(
                     5, // Move to right 5  horizontally
-                    5, // Move to bottom -5 Vertically
+                    -5, // Move to bottom -5 Vertically
                   ),
                 )
               ],
             ),
             child: ListTile(
               leading: Checkbox(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
                 value: task.isComplete,
                 onChanged: (value) {
                   // Handle checkbox onChanged event here
@@ -344,13 +351,14 @@ List<Task>tasks=[];
                   // value= task.isComplete,
                 },
               ),
+
               title: DefaultTextStyle(
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                 ),
                 child: Text(task.title),
               ),
-              subtitle: Text(trimDescription(task.description, 30)),
+              subtitle: Text(trimDescription(task.description, 20)),
               trailing: PopupMenuButton(
                 onSelected: (value) {
                   if (value == 'edit') {
@@ -365,16 +373,15 @@ List<Task>tasks=[];
                 ],
               ),
               onTap: () {
-                // _editTask(task);
                 viewTask(context, task);
               },
-              // onLongPress: () {
-              //   setState(() {
-              //     task.toggleCompleted();
-              //     saveTasks(tasks);
-              //   });
-              // },
-              
+              onLongPress: () {
+                setState(() {
+                  task.toggleCompleted();
+                  saveTasks(tasks);
+                });
+              },
+
               // tileColor: task.isComplete
               //     ? Color.fromARGB(255, 151, 255, 153).withOpacity(0.3)
               //     : Color.fromARGB(181, 164, 193, 255).withOpacity(1),
@@ -429,15 +436,16 @@ List<Task>tasks=[];
             onTap: (index) async {
               // List<String>tasks=
               saveTasks(tasks);
-
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/login',
-                (route) => false,
-              );
+              if (index == 1) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/login',
+                  (route) => false,
+                );
+              }
               setState(() {
                 activeIndex = index;
-                //   if(index==1){
+
                 saveTasks(tasks);
               });
             },
@@ -484,6 +492,7 @@ List<Task>tasks=[];
     }
   }
 
+  NotificationServices notificationServices = NotificationServices();
   void _createTask() async {
     final newTask = await showDialog<Task>(
       context: context,
@@ -494,6 +503,8 @@ List<Task>tasks=[];
       setState(() {
         tasks.add(newTask);
         saveTasks(tasks);
+        notificationServices.sendNotification('Task created',
+            'Task has been created on ${DateFormat('hh:mm a').format(DateTime.now())}');
       });
     }
   }
@@ -509,6 +520,8 @@ List<Task>tasks=[];
         final index = tasks.indexOf(task);
         tasks[index] = editedTask;
         saveTasks(tasks);
+        notificationServices.sendNotification('Task Updated',
+            'Task has been Updated on ${DateFormat('hh:mm a').format(DateTime.now())}');
       });
     }
   }
@@ -517,6 +530,8 @@ List<Task>tasks=[];
     setState(() {
       tasks.removeAt(index);
       saveTasks(tasks);
+      notificationServices.sendNotification('Task Deleted',
+          'Task has been deleted on ${DateFormat('hh:mm a').format(DateTime.now())}');
     });
   }
 
@@ -528,14 +543,14 @@ List<Task>tasks=[];
         return Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(40)),
           child: AlertDialog(
-            title: Text('Search Tasks'),
+            title: const Text('Search Tasks'),
             content: TextField(
               onChanged: (value) {
                 setState(() {
                   selectedCategoryValue = value;
                 });
               },
-              decoration:const InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter title, description, category',
                 border: InputBorder.none,
                 enabledBorder: UnderlineInputBorder(
@@ -622,7 +637,7 @@ class _TaskDialogState extends State<TaskDialog> {
   late TimeOfDay _selectedReminderTime;
   TaskPriority _selectedPriority = TaskPriority.Low;
   Categories _selectedCategory = Categories.personal;
- NotificationServices notificationServices = NotificationServices();
+  NotificationServices notificationServices = NotificationServices();
   @override
   void initState() {
     super.initState();
@@ -737,8 +752,6 @@ class _TaskDialogState extends State<TaskDialog> {
             ElevatedButton(
               onPressed: () {
                 _saveTask();
-                 notificationServices.sendNotification(
-                    'Task has been created', 'Task created');
               },
               child: Text('Save'),
             ),
@@ -776,11 +789,11 @@ class _TaskDialogState extends State<TaskDialog> {
     }
   }
 
-  void _saveTask() {
+  void _saveTask() async {
     final title = _titleController.text.trim();
     final description = _descriptionController.text.trim();
 
-    if (title.isNotEmpty) {
+    if (title.isNotEmpty && description.isNotEmpty) {
       final task = Task(
         title: title,
         description: description,
@@ -805,14 +818,32 @@ class _TaskDialogState extends State<TaskDialog> {
         print('Category: ${task.category}');
         print('-------------------');
       }
-
+//  notificationServices.sendNotification(
+//                     'Task created', 'Task has been created');
       Navigator.of(context).pop(task);
+    } else {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Failed to create Task'),
+            content: Text('Please enter both the title and description.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 }
 
 String trimDescription(String description, int maxLength) {
-
   if (description.length <= maxLength) {
     // If the number of words is already 10 or less, return the original description
     return description;
